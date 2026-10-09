@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shagun Mishra | Android & Software Developer Portfolio</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            hand: ['Gaegu', 'cursive'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            space: {
+              900: '#030611',
+              850: '#070c20',
+              800: '#0d1330',
+              700: '#141c42',
+            }
+          },
+          animation: {
+            'float-slow': 'float 8s ease-in-out infinite',
+            'float-mid': 'float 6s ease-in-out infinite',
+            'float-fast': 'float 4s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-14px) rotate(1deg)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    #space-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .collage-badge {
+      font-family: 'Gaegu', cursive;
+      background: #fdf0cd;
+      color: #1e1e24;
+      transform: rotate(-1.5deg);
+      box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.85);
+      border: 2px solid #1e1e24;
+    }
+    .collage-paper {
+      font-family: 'Gaegu', cursive;
+      border: 2px solid #151a30;
+      box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.75);
+    }
+
+    .holo-frame {
+      background: rgba(13, 19, 48, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .holo-frame:hover {
+      border-color: #00f2fe;
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.3), 0 0 15px rgba(157, 78, 221, 0.3), 8px 8px 0px rgba(0, 0, 0, 0.7);
+      transform: translateY(-6px) scale(1.015);
+    }
+
+    .sketch-svg {
+      pointer-events: none;
+      filter: drop-shadow(0px 0px 4px rgba(0, 242, 254, 0.6));
+    }
+
+    .holo-text {
+      background: linear-gradient(135deg, #00f2fe 0%, #a155e8 50%, #f72585 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-[#030611] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-pink-500/30 selection:text-pink-200">
+
+  <!-- Interactive Starfield Background -->
+  <canvas id="space-canvas"></canvas>
+
+  <div class="fixed top-[5%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-600/10 blur-[130px] pointer-events-none z-0 animate-pulse-slow"></div>
+  <div class="fixed bottom-[15%] right-[-10%] w-[700px] h-[700px] rounded-full bg-purple-600/10 blur-[150px] pointer-events-none z-0 animate-pulse-slow"></div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md bg-space-900/80 border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="#hero" class="flex items-center space-x-3 group relative">
+        <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-cyan-400 via-indigo-600 to-pink-500 p-[2px] transition group-hover:rotate-12">
+          <div class="w-full h-full bg-space-900 rounded-full flex items-center justify-center font-display font-bold text-cyan-400">
+            SM
+          </div>
+        </div>
+        <div>
+          <span class="font-display font-bold text-lg tracking-wide group-hover:text-cyan-400 transition block leading-tight">Shagun Mishra</span>
+          <span class="font-hand text-xs text-purple-300 tracking-wider">★ Cosmic Portfolio</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+        <a href="#about" class="hover:text-cyan-400 transition">About</a>
+        <a href="#constellations" class="hover:text-cyan-400 transition">Skills Constellation</a>
+        <a href="#timeline" class="hover:text-cyan-400 transition">Cosmic Journey</a>
+        <a href="#projects" class="hover:text-cyan-400 transition">Featured Projects</a>
+        <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+      </nav>
+
+      <!-- Header Social Links with Proper Names -->
+      <div class="flex items-center space-x-3">
+        <a href="https://github.com/shagun-misra" target="_blank" rel="noopener noreferrer" 
+           class="inline-flex items-center space-x-2 px-3.5 py-2 rounded-xl border border-white/10 hover:border-cyan-400/50 hover:bg-cyan-500/10 transition text-slate-200 text-xs font-mono" title="Visit Shagun's GitHub Profile">
+          <i data-lucide="github" class="w-4 h-4 text-cyan-400"></i>
+          <span class="hidden sm:inline">GitHub</span>
+        </a>
+        <a href="https://www.linkedin.com/in/shagun-mishr%C3%A0-9a3aa7329" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center space-x-2 px-3.5 py-2 rounded-xl border border-white/10 hover:border-purple-400/50 hover:bg-purple-500/10 transition text-slate-200 text-xs font-mono" title="Visit Shagun's LinkedIn Profile">
+          <i data-lucide="linkedin" class="w-4 h-4 text-purple-400"></i>
+          <span class="hidden sm:inline">LinkedIn</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-20">
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-[92vh] flex items-center justify-center px-6 relative">
+      <div class="max-w-4xl mx-auto text-center py-16 relative">
+        
+        <svg class="absolute -top-12 left-0 w-24 h-24 text-cyan-400/30 sketch-svg animate-float-slow" fill="none" viewBox="0 0 100 100">
+          <path d="M10,50 Q40,10 50,50 T90,50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="5" fill="currentColor"/>
+          <circle cx="90" cy="50" r="2" fill="currentColor"/>
+          <circle cx="10" cy="50" r="2" fill="currentColor"/>
+        </svg>
+
+        <div class="absolute -top-4 right-8 flex items-center space-x-2 px-3 py-1.5 rounded-full collage-badge border-2 border-black rotate-3 text-xs font-bold text-indigo-900 animate-float-fast shadow-md">
+          <span>🚀 Developer Mode</span>
+          <span class="bg-indigo-900 text-yellow-300 px-1.5 rounded-full font-mono text-[9px]">Active</span>
+        </div>
+
+        <div class="inline-flex items-center space-x-2 px-5 py-2.5 collage-badge text-sm mb-6 max-w-xs transition hover:rotate-0 cursor-default">
+          <span class="text-xl">🧑‍🚀</span>
+          <span class="font-bold">COSMIC COLLAGE PORTFOLIO</span>
+        </div>
+
+        <h1 class="text-5xl sm:text-7xl md:text-8xl font-display font-bold tracking-tight mb-4 relative z-10">
+          Hi, I'm <span class="holo-text">Shagun Mishra</span>
+        </h1>
+        
+        <p class="text-2xl sm:text-3xl text-slate-200 font-display font-bold mb-4 flex flex-wrap justify-center items-center gap-2">
+          Android & Software Developer 
+          <span class="text-xs text-pink-400 bg-pink-500/10 px-2.5 py-1 rounded-full font-mono">CS Student & Creator</span>
+        </p>
+
+        <!-- Location & Availability Badge -->
+        <div class="flex items-center justify-center space-x-2 text-xs font-mono text-slate-400 mb-8">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>India &bull; Open to Remote Opportunities & Collaboration</span>
+        </div>
+
+        <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+          Engineering mobile and web systems with Java, JavaScript, and Android Studio. Developing smart utilities from intelligent resume parsers to structured digital apps.
+        </p>
+
+        <!-- CTA Buttons with direct scrolling -->
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="#projects" class="px-7 py-3.5 rounded-2xl font-bold bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-600 hover:opacity-95 text-slate-950 font-semibold transition-all hover:scale-105 shadow-xl shadow-cyan-400/20 flex items-center space-x-2">
+            <span>Explore Projects Gallery</span>
+            <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+          </a>
+          <a href="https://github.com/shagun-misra" target="_blank" rel="noopener noreferrer" 
+             class="px-6 py-3.5 rounded-2xl font-medium holo-frame border-white/20 text-slate-200 transition hover:bg-white/5 flex items-center space-x-2">
+            <i data-lucide="github" class="w-4 h-4 text-cyan-400"></i>
+            <span>GitHub Profile</span>
+          </a>
+          <a href="https://www.linkedin.com/in/shagun-mishr%C3%A0-9a3aa7329" target="_blank" rel="noopener noreferrer" 
+             class="px-6 py-3.5 rounded-2xl font-medium holo-frame border-white/20 text-slate-200 transition hover:bg-white/5 flex items-center space-x-2">
+            <i data-lucide="linkedin" class="w-4 h-4 text-purple-400"></i>
+            <span>LinkedIn Profile</span>
+          </a>
+        </div>
+
+        <div class="mt-16 flex flex-col items-center">
+          <span class="font-hand text-sm text-cyan-400 tracking-widest uppercase animate-pulse">Scroll down to explore</span>
+          <i data-lucide="chevrons-down" class="w-6 h-6 text-cyan-400/60 animate-bounce mt-1"></i>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 relative">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16 relative">
+          <span class="font-hand text-3xl text-pink-400 absolute -top-8 left-1/4 -rotate-12 animate-float-mid select-none">★ MISSION LOG ★</span>
+          <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">// Cosmic Crew Information</h2>
+          <h3 class="text-4xl sm:text-5xl font-display font-bold">About Me</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-[#fefce8] text-slate-900 collage-paper p-7 rounded-3xl relative transform -rotate-1 transition hover:rotate-0">
+            <div class="absolute -top-3.5 left-1/3 w-28 h-6 bg-slate-300/40 border-l border-r border-slate-400/50 -rotate-3"></div>
+            
+            <div class="w-12 h-12 rounded-2xl bg-indigo-900 flex items-center justify-center text-yellow-300 mb-6 border border-slate-900 shadow-md">
+              <i data-lucide="user" class="w-6 h-6"></i>
+            </div>
+            <h4 class="font-hand text-2xl font-bold mb-3">Who Am I?</h4>
+            <p class="font-hand text-lg text-slate-700 leading-relaxed">
+              Hey! I'm Shagun Mishra, an Android & Software Developer and Computer Science student. I enjoy building real-world projects, learning modern tech stacks, and creating intuitive user experiences.
+            </p>
+          </div>
+
+          <div class="holo-frame p-7 rounded-3xl relative overflow-hidden md:col-span-2 group">
+            <div class="absolute top-0 right-0 p-3 text-[11px] font-mono text-cyan-300 border-b border-l border-white/5 bg-white/5 rounded-bl-xl font-bold">
+              PROFILE & INTERESTS
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-6 border border-cyan-500/20">
+              <i data-lucide="sparkles" class="w-6 h-6"></i>
+            </div>
+            <h4 class="font-display font-bold text-2xl mb-4 text-slate-100">App Development & Software Engineering</h4>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Experienced in developing native Android applications with <strong>Java</strong> in <strong>Android Studio</strong>, designing responsive <strong>frontend</strong> web pages with <strong>JavaScript</strong>, and structuring <strong>backend</strong> logic, database schemas, and intelligent data parsing algorithms.
+            </p>
+            <div class="flex flex-wrap gap-2 pt-2">
+              <span class="text-xs font-mono bg-white/5 text-slate-300 px-3 py-1.5 rounded-lg border border-white/5">📱 Android Studio & Java</span>
+              <span class="text-xs font-mono bg-white/5 text-slate-300 px-3 py-1.5 rounded-lg border border-white/5">💻 Frontend & Backend Logic</span>
+              <span class="text-xs font-mono bg-white/5 text-slate-300 px-3 py-1.5 rounded-lg border border-white/5">🛠 Git Version Control</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Constellation Section -->
+    <section id="constellations" class="py-24 px-6 relative">
+      <div class="max-w-6xl mx-auto relative">
+        <div class="text-center mb-16">
+          <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">// Starcraft Abilities</h2>
+          <h3 class="text-4xl sm:text-5xl font-display font-bold">Skills Constellation</h3>
+          <p class="font-hand text-lg text-purple-300 mt-2">All skills, stacks, and developer tools powering my work.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+          
+          <!-- 1. App Development & Java -->
+          <div class="holo-frame p-6 rounded-3xl border border-cyan-500/30">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-cyan-400/10 flex items-center justify-center text-cyan-400 border border-cyan-400/20">
+                <i data-lucide="smartphone" class="w-5 h-5"></i>
+              </div>
+              <span class="font-hand text-sm text-yellow-300 bg-yellow-400/10 border border-yellow-400/20 px-2 py-0.5 rounded">*Mobile Core*</span>
+            </div>
+            <h4 class="font-display font-bold text-lg mb-2 text-slate-100">App Development</h4>
+            <p class="text-slate-400 text-xs leading-relaxed mb-4">Native Android mobile applications, activity lifecycles, and view architectures.</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">Java</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">Android Studio</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">Android SDK</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">XML Layouts</span>
+            </div>
+          </div>
+
+          <!-- 2. Frontend Development -->
+          <div class="holo-frame p-6 rounded-3xl border border-purple-500/30">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-purple-400/10 flex items-center justify-center text-purple-400 border border-purple-400/20">
+                <i data-lucide="layout" class="w-5 h-5"></i>
+              </div>
+              <span class="font-hand text-sm text-yellow-300 bg-yellow-400/10 border border-yellow-400/20 px-2 py-0.5 rounded">*Web UI*</span>
+            </div>
+            <h4 class="font-display font-bold text-lg mb-2 text-slate-100">Frontend Development</h4>
+            <p class="text-slate-400 text-xs leading-relaxed mb-4">Responsive browser user experiences, modern styling, and DOM scripting.</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-purple-500/15 border border-purple-500/30 text-purple-300">JavaScript</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-purple-500/15 border border-purple-500/30 text-purple-300">HTML5</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-purple-500/15 border border-purple-500/30 text-purple-300">CSS3 / Tailwind</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-purple-500/15 border border-purple-500/30 text-purple-300">UI / UX Design</span>
+            </div>
+          </div>
+
+          <!-- 3. Backend & Data Logic -->
+          <div class="holo-frame p-6 rounded-3xl border border-pink-500/30">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-pink-400/10 flex items-center justify-center text-pink-400 border border-pink-400/20">
+                <i data-lucide="server" class="w-5 h-5"></i>
+              </div>
+              <span class="font-hand text-sm text-yellow-300 bg-yellow-400/10 border border-yellow-400/20 px-2 py-0.5 rounded">*Logic & Data*</span>
+            </div>
+            <h4 class="font-display font-bold text-lg mb-2 text-slate-100">Backend & Logic</h4>
+            <p class="text-slate-400 text-xs leading-relaxed mb-4">Data modeling, database operations, backend routing logic, and parsing algorithms.</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-pink-500/15 border border-pink-500/30 text-pink-300">Python</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-pink-500/15 border border-pink-500/30 text-pink-300">SQL / Databases</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-pink-500/15 border border-pink-500/30 text-pink-300">REST APIs</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-pink-500/15 border border-pink-500/30 text-pink-300">Data Parsing</span>
+            </div>
+          </div>
+
+          <!-- 4. Tools & Computer Science Core -->
+          <div class="holo-frame p-6 rounded-3xl border border-emerald-500/30">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-emerald-400/10 flex items-center justify-center text-emerald-400 border border-emerald-400/20">
+                <i data-lucide="git-branch" class="w-5 h-5"></i>
+              </div>
+              <span class="font-hand text-sm text-yellow-300 bg-yellow-400/10 border border-yellow-400/20 px-2 py-0.5 rounded">*Workflow*</span>
+            </div>
+            <h4 class="font-display font-bold text-lg mb-2 text-slate-100">Tools & Foundations</h4>
+            <p class="text-slate-400 text-xs leading-relaxed mb-4">Version control systems, programming paradigms, and CS problem solving.</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">Git</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">GitHub</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">VS Code</span>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">OOP & DSA</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Cosmic Map / Storytelling Timeline -->
+    <section id="timeline" class="py-24 px-6 relative bg-gradient-to-b from-transparent to-space-850/50">
+      <div class="max-w-4xl mx-auto relative">
+        <div class="text-center mb-16 relative">
+          <span class="font-hand text-3xl text-pink-400 absolute -top-8 right-1/4 rotate-12 select-none">🛸 JOURNEY MAP</span>
+          <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">// Cosmic Milestones</h2>
+          <h3 class="text-4xl sm:text-5xl font-display font-bold">Starlight Journey</h3>
+        </div>
+
+        <div class="relative pl-8 sm:pl-32 border-l-2 border-dashed border-indigo-500/40 ml-4 sm:ml-0 space-y-16 py-8">
+          
+          <div class="relative group">
+            <div class="absolute -left-[45px] sm:-left-[145px] top-1.5 w-8 h-8 rounded-full bg-[#030611] border-4 border-cyan-400 shadow-[0_0_15px_rgba(0,242,254,0.7)] flex items-center justify-center text-xs font-mono text-cyan-400 transition group-hover:scale-125 z-10 animate-pulse">
+              1
+            </div>
+            <div class="holo-frame p-6 rounded-3xl relative">
+              <span class="absolute -top-4 right-6 collage-badge text-xs font-bold font-hand text-slate-800">ORBIT POINT I</span>
+              <h4 class="font-display font-bold text-xl text-slate-100 flex items-center space-x-2">
+                <span>Computer Science Foundations</span>
+                <span class="text-xs text-cyan-400 border border-cyan-400/20 bg-cyan-500/10 px-2 py-0.5 rounded font-mono">Present</span>
+              </h4>
+              <p class="text-slate-400 text-xs mt-1">CS Student & Algorithmic Exploration</p>
+              <p class="text-slate-300 text-sm mt-4 leading-relaxed">
+                Exploring core programming principles, object-oriented concepts, and algorithmic problem-solving methodologies.
+              </p>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <div class="absolute -left-[45px] sm:-left-[145px] top-1.5 w-8 h-8 rounded-full bg-[#030611] border-4 border-purple-500 shadow-[0_0_15px_rgba(157,78,221,0.7)] flex items-center justify-center text-xs font-mono text-purple-400 transition group-hover:scale-125 z-10 animate-pulse">
+              2
+            </div>
+            <div class="holo-frame p-6 rounded-3xl relative">
+              <span class="absolute -top-4 right-6 collage-badge text-xs font-bold font-hand text-slate-800">ORBIT POINT II</span>
+              <h4 class="font-display font-bold text-xl text-slate-100 flex items-center space-x-2">
+                <span>Native Android Development</span>
+                <span class="text-xs text-purple-400 border border-purple-400/20 bg-purple-500/10 px-2 py-0.5 rounded font-mono">Mobile Focus</span>
+              </h4>
+              <p class="text-slate-400 text-xs mt-1">Hands-on Android Studio & Java</p>
+              <p class="text-slate-300 text-sm mt-4 leading-relaxed">
+                Building functional Android applications, handling user input, managing app lifecycle states, and writing responsive XML layouts.
+              </p>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <div class="absolute -left-[45px] sm:-left-[145px] top-1.5 w-8 h-8 rounded-full bg-[#030611] border-4 border-pink-500 shadow-[0_0_15px_rgba(247,37,133,0.7)] flex items-center justify-center text-xs font-mono text-pink-400 transition group-hover:scale-125 z-10 animate-pulse">
+              3
+            </div>
+            <div class="holo-frame p-6 rounded-3xl relative">
+              <span class="absolute -top-4 right-6 collage-badge text-xs font-bold font-hand text-slate-800">ORBIT POINT III</span>
+              <h4 class="font-display font-bold text-xl text-slate-100 flex items-center space-x-2">
+                <span>Applied Projects & Web Systems</span>
+                <span class="text-xs text-pink-400 border border-pink-400/20 bg-pink-500/10 px-2 py-0.5 rounded font-mono">Current Frontier</span>
+              </h4>
+              <p class="text-slate-400 text-xs mt-1">Resume Analyzer & Minor Projects</p>
+              <p class="text-slate-300 text-sm mt-4 leading-relaxed">
+                Developing intelligent software utilities and practical minor projects that connect frontend interfaces with structured backend logic.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects Gallery -->
+    <section id="projects" class="py-24 px-6 relative scroll-mt-10">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 relative">
+          <svg class="absolute -top-10 -left-6 w-16 h-16 text-yellow-300/40 sketch-svg rotate-12" fill="none" viewBox="0 0 100 100">
+            <ellipse cx="50" cy="50" rx="40" ry="25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">// Floating Cosmic Frames</h2>
+            <h3 class="text-4xl sm:text-5xl font-display font-bold">Featured Projects</h3>
+            <p class="font-hand text-lg text-yellow-300 mt-2">Drawn overlays on high-tech spacecraft frameworks.</p>
+          </div>
+          <a href="https://github.com/shagun-misra" target="_blank" rel="noopener noreferrer" 
+             class="mt-6 md:mt-0 px-6 py-3 rounded-2xl collage-badge flex items-center space-x-2 text-slate-900 font-bold transition hover:scale-105">
+            <span>Explore All GitHub Repositories</span>
+            <i data-lucide="external-link" class="w-4 h-4 text-slate-900"></i>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative">
+          
+          <!-- PROJECT 1: Resume Analyzer -->
+          <div class="holo-frame rounded-3xl overflow-hidden group relative transform -rotate-1 hover:rotate-0 transition">
+            <div class="absolute -top-1.5 left-8 px-4 py-1 collage-badge text-xs font-bold text-slate-900 z-10 shadow-sm border border-slate-900 bg-amber-200">
+              📊 ANALYTICAL & PARSING ENGINE
+            </div>
+
+            <div class="p-8 pt-10">
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono text-cyan-400 border border-cyan-400/20 bg-cyan-500/10 px-2.5 py-0.5 rounded">Smart Software Tool</span>
+                <a href="https://github.com/shagun-misra" target="_blank" rel="noopener noreferrer" 
+                   class="text-slate-400 hover:text-cyan-400 transition" title="Examine Code on GitHub">
+                  <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+              </div>
+              <h4 class="text-3xl font-display font-bold text-slate-100 group-hover:text-cyan-300 transition-colors mb-3">Resume Analyzer</h4>
+              <p class="text-slate-400 text-sm leading-relaxed mb-6 font-light">
+                An intelligent system designed to scan, parse, and analyze resumes against job descriptions. Evaluates keyword matching, skill identification, scoring metrics, and provides actionable recommendations to optimize candidate profiles.
+              </p>
+              
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 rounded text-xs font-mono bg-white/5 border border-white/5 text-slate-300">Java / Python</span>
+                <span class="px-2.5 py-1 rounded text-xs font-mono bg-white/5 border border-white/5 text-slate-300">Text Parsing</span>
+                <span class="px-2.5 py-1 rounded text-xs font-mono bg-white/5 border border-white/5 text-slate-300">Keyword Extraction</span>
+                <span class="px-2.5 py-1 rounded text-xs font-mono bg-white/5 border border-white/5 text-slate-300">Analytics UI</span>
+              </div>
+
+              <a href="https://github.com/shagun-misra" target="_blank" rel="noopener noreferrer" 
+                 class="inline-flex items-center space-x-2 text-sm font-semibold text-cyan-400 group-hover:text-cyan-300 transition">
+                <span>View on GitHub: Resume Analyzer</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 transition group-hover:translate-x-1"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- PROJECT 2: Minor Project -->
+          <div class="holo-frame rounded-3xl overflow-hidden group relative transform rotate-1 hover:rotate-0 transition">
+            <div class="absolute -top-1.5 left-8 px-4 py-1 collage-badge text-xs font-bold text-slate-900 z-10 shadow-sm border border-slate-900 bg-pink-200">
+              🛠 ACADEMIC & TECHNICAL CAPSTONE
+            </div>
+
+            <div class="p-8 pt-10">
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono text-purple-400 border border-purple-400/20 bg-purple-500/10 px-2.5 py-0.5 rounded">Core Software Architecture</span>
+                <a href="https://github.com/shagun-misra" target="_blank" rel="noopener noreferrer" 
+                   class="text-slate-400 hover:text-purple-400 transition" title="Examine Code on GitHub">
+                  <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+              </div>
+              <h4 class="text-3xl font-display font-bold text-slate-100 group-hover:text-purple-300 transition-colors mb-3">Minor Project</h4>
+              <p class="text-slate-400 text-sm leading-relaxed mb-6 font-light">
+                A dedicated computer science project showcasing applied software engineering, structured data flow, clean code practices, and functional backend-frontend coordination designed for real-world usability.
+              </p>
+              
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 rounded text-xs font-mono bg-white/5 border border-white/5 text-slate-300">Java / Software Design</span>
+                <span class="px-2.5 py-1 rounded text-xs font-mono bg-white/5 border border-white/5 text-slate-300">Data Architecture</span>
+                <span class="px-2.5 py-1 rounded text-xs font-mono bg-white/5 border border-white/5 text-slate-300">Problem Solving</span>
+                <span class="px-2.5 py-1 rounded text-xs font-mono bg-white/5 border border-white/5 text-slate-300">Git Workflow</span>
+              </div>
+
+              <a href="https://github.com/shagun-misra" target="_blank" rel="noopener noreferrer" 
+                 class="inline-flex items-center space-x-2 text-sm font-semibold text-purple-400 group-hover:text-purple-300 transition">
+                <span>View on GitHub: Minor Project</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 transition group-hover:translate-x-1"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Transmission Link Section -->
+    <section id="contact" class="py-24 px-6 relative">
+      <div class="max-w-4xl mx-auto relative">
+        <div class="text-center mb-16 relative">
+          <span class="font-hand text-3xl text-cyan-400 absolute -top-8 left-1/4 -rotate-12 select-none">📨 SEND LINK ★</span>
+          <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">// Interstellar Transmission</h2>
+          <h3 class="text-4xl sm:text-5xl font-display font-bold">Contact Ground Control</h3>
+        </div>
+
+        <div class="holo-frame p-8 md:p-12 rounded-[36px] relative overflow-hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+            <div>
+              <h4 class="text-2xl font-display font-bold mb-4 text-slate-100">
+                Connect Directly
+              </h4>
+              <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                Ready to collaborate on application development, software engineering, or technical projects. Reach out via email or connect with me on LinkedIn and GitHub:
+              </p>
+
+              <!-- Properly Named and Labeled Social & Communication Links -->
+              <div class="space-y-4">
+                
+                <!-- Email -->
+                <a href="mailto:mishrashagun2710@gmail.com" class="flex items-center space-x-3 text-slate-300 hover:text-cyan-400 transition group p-2 rounded-2xl hover:bg-white/5">
+                  <div class="w-11 h-11 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 border border-cyan-500/20 group-hover:scale-105 transition">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <span class="block text-xs font-mono text-slate-400">Direct Email</span>
+                    <span class="text-sm font-medium font-mono text-cyan-300">mishrashagun2710@gmail.com</span>
+                  </div>
+                </a>
+
+                <!-- LinkedIn with Exact Profile URL -->
+                <a href="
